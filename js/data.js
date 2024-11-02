@@ -10,7 +10,10 @@ const getAvatar = () => {
   return `img/avatars/user${number < 10 ? '0' + number : number}.png`;
 };
 const getAddress = () => {
-  return [getRandomFloat(35.65000, 35.70000, 5), getRandomFloat(139.70000, 139.80000, 5)];
+  return {
+    lat: getRandomFloat(35.65000, 35.70000, 5),
+    lng: getRandomFloat(139.70000, 139.80000, 5),
+  };
 };
 const getPhotos = () => {
   let result = [];
@@ -52,13 +55,11 @@ const createObject = () => {
       photos: getPhotos(),
     },
 
-    location: {
-      address: getAddress(),
-    },
+    location: getAddress(),
   };
 };
 
-const similarObject = new Array().fill(null).map(() => createObject());
+const similarObject = new Array(10).fill(null).map(() => createObject());
 
 export { similarObject, getFeatures, getAvatar };
 

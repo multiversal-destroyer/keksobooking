@@ -1,3 +1,6 @@
+import { createPopupContent } from './popup.js';
+import { similarObject } from './data.js';
+
 const adForm = document.querySelector('.ad-form');
 const mapFilters = document.querySelector('.map__filters');
 const inputAddress = document.querySelector('#address');
@@ -20,7 +23,7 @@ const map = L.map('map-canvas')
   .setView({
     lat: 35.681729,
     lng: 139.753927,
-  }, 10);
+  }, 13);
 
 L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -58,36 +61,8 @@ mainPinMarker.on('moveend', (evt) => {
   inputAddress.value = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
 });
 
-const points = [
-  {
-    title: 'Футура',
-    lat: 59.96925,
-    lng: 30.31730,
-  },
-  {
-    title: 'Шаверма',
-    lat: 59.96783,
-    lng: 30.31258,
-  },
-  {
-    title: 'Франк',
-    lat: 59.95958,
-    lng: 30.30228,
-  },
-  {
-    title: 'Ginza',
-    lat: 59.97292,
-    lng: 30.31982,
-  },
-];
-
-const createCustomPopup = ({lat, lng, title}) => `<section class="balloon">
-  <h3 class="balloon__title">${title}</h3>
-  <p class="balloon__lat-lng">Координаты: ${lat}, ${lng}</p>
-</section>`;
-
-points.forEach((point) => {
-  const {lat, lng} = point;
+similarObject.forEach((object) => {
+  const { lat, lng } = object.location;
 
   const icon = L.icon({
     iconUrl: 'https://assets.htmlacademy.ru/content/intensive/javascript-1/demo/interactive-map/pin.svg',
@@ -107,7 +82,5 @@ points.forEach((point) => {
 
   marker
     .addTo(map)
-    .bindPopup(
-      createCustomPopup(point),
-    );
+    .bindPopup(createPopupContent(object));
 });

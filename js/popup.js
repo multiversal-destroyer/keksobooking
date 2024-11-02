@@ -1,13 +1,12 @@
-import {similarObject, getFeatures, getAvatar} from './data.js';
+import { getFeatures, getAvatar } from './data.js';
 
 const popupTemplate = document.querySelector('#card').content.querySelector('.popup');
-const mapCanvas = document.querySelector('.map__canvas');
 
-similarObject.forEach((object) => {
+export const createPopupContent = (object) => {
   const popupElement = popupTemplate.cloneNode(true);
 
   popupElement.querySelector('.popup__title').textContent = object.offer.title;
-  popupElement.querySelector('.popup__text--address').textContent = object.offer.address;
+  popupElement.querySelector('.popup__text--address').textContent = `${object.location.lat}, ${object.location.lng}`;
   const priceElement = popupElement.querySelector('.popup__text--price');
   priceElement.textContent = object.offer.price;
   priceElement.insertAdjacentHTML('beforeend', '<span> ₽/ночь</span>');
@@ -17,7 +16,7 @@ similarObject.forEach((object) => {
   popupElement.querySelector('.popup__features').innerHTML = '';
   getFeatures().forEach((features) => {
     const newFeatures = document.createElement('li');
-    newFeatures.classList.add('popup__feature', `popup__feature--${features}`)
+    newFeatures.classList.add('popup__feature', `popup__feature--${features}`);
     popupElement.querySelector('.popup__features').appendChild(newFeatures);
   });
   popupElement.querySelector('.popup__description').textContent = object.offer.description;
@@ -33,7 +32,5 @@ similarObject.forEach((object) => {
   });
   popupElement.querySelector('.popup__avatar').src = getAvatar();
 
-  mapCanvas.appendChild(popupElement);
-});
-
-
+  return popupElement;
+};
