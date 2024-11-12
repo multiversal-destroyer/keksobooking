@@ -1,5 +1,4 @@
 import { createPopupContent } from './popup.js';
-import { similarObject } from './data.js';
 
 const adForm = document.querySelector('.ad-form');
 const mapFilters = document.querySelector('.map__filters');
@@ -61,26 +60,31 @@ mainPinMarker.on('moveend', (evt) => {
   inputAddress.value = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
 });
 
-similarObject.forEach((object) => {
-  const { lat, lng } = object.location;
+fetch('https://23.javascript.htmlacademy.pro/keksobooking/data')
+  .then((response) => response.json())
+  .then((objects) => {
+    console.log(objects);
+    objects.slice(0, 10).forEach((object) => {
+      const { lat, lng } = object.location;
 
-  const icon = L.icon({
-    iconUrl: 'https://assets.htmlacademy.ru/content/intensive/javascript-1/demo/interactive-map/pin.svg',
-    iconSize: [40, 40],
-    iconAnchor: [20, 40],
-  });
+      const icon = L.icon({
+        iconUrl: 'https://assets.htmlacademy.ru/content/intensive/javascript-1/demo/interactive-map/pin.svg',
+        iconSize: [40, 40],
+        iconAnchor: [20, 40],
+      });
 
-  const marker = L.marker(
-    {
-      lat,
-      lng,
-    },
-    {
-      icon,
-    },
-  );
+      const marker = L.marker(
+        {
+          lat,
+          lng,
+        },
+        {
+          icon,
+        },
+      );
 
-  marker
-    .addTo(map)
-    .bindPopup(createPopupContent(object));
-});
+      marker
+        .addTo(map)
+        .bindPopup(createPopupContent(object));
+    });
+  })

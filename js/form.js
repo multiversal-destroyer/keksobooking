@@ -16,6 +16,28 @@ priceInput.addEventListener('input', () => {
   }
 });
 
+function findOption() {
+  const roomCount = roomNumberSelect.value;
+  for (let i = 0; i < capacitySelect.options.length; i++) {
+    const capacityOption = capacitySelect.options[i];
+    const guestCount = capacityOption.value;
+    if (guestCount > roomCount) {
+      capacityOption.disabled = true;
+    } else {
+      capacityOption.disabled = false;
+    }
+  }
+  if (capacitySelect.value > roomCount) {
+    capacitySelect.setCustomValidity('Выберите допустимое количество гостей.');
+  } else {
+    capacitySelect.setCustomValidity('');
+  }
+  capacitySelect.reportValidity();
+}
+
+capacitySelect.onchange = findOption;
+roomNumberSelect.onchange = findOption;
+
 typeSelect.addEventListener('change', () => {
   if (typeSelect.value === 'bungalow') {
     priceInput.min = "0";
