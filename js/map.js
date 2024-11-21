@@ -1,5 +1,5 @@
 import { createPopupContent } from './popup.js';
-import { data } from './filter.js';
+import { dataObjects } from './api.js';
 
 const adForm = document.querySelector('.ad-form');
 const mapFilters = document.querySelector('.map__filters');
@@ -37,11 +37,6 @@ const mainPinIcon = L.icon({
   iconSize: [52, 52],
   iconAnchor: [26, 52],
 });
-const basicPinIcon = L.icon({
-  iconUrl: 'https://assets.htmlacademy.ru/content/intensive/javascript-1/demo/interactive-map/pin.svg',
-  iconSize: [40, 40],
-  iconAnchor: [20, 40],
-});
 
 const mainPinMarker = L.marker(
   {
@@ -61,7 +56,17 @@ mainPinMarker.on('moveend', (evt) => {
   inputAddress.value = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
 });
 
+let markers;
+
+processData(dataObjects);
+
 function processData(data) {
+  if (markers) {
+    markers.clearLayers();
+  } else {
+    markers = L.layerGroup().addTo(map);
+  }
+
   data.slice(0, 10).forEach((object) => {
     const { lat, lng } = object.location;
 
@@ -71,15 +76,12 @@ function processData(data) {
       iconAnchor: [20, 40],
     });
 
-    const marker = L.marker(
-      { lat, lng },
-      { icon }
-    );
+    const marker = L.marker({ lat, lng }, { icon });
 
     marker
-      .addTo(map)
+      .addTo(markers)
       .bindPopup(createPopupContent(object));
   });
-};
+}
 
 export { processData };

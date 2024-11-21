@@ -69,8 +69,6 @@ housingRooms.onchange = filterObjects;
 housingGuests.onchange = filterObjects;
 featuresList.forEach((feature) => feature.onchange = filterObjects);
 
-export { data };
-
 /*
 1. Перебрать данные из сервера при помощи forEach;
 2. Для каждого объекта провести сортировку:
@@ -82,5 +80,3 @@ export { data };
 4. Добавить каждому select обработчик событий input, чтобы сортировка проходила заново каждый раз
    при смене значений фильтра на странице.
 */
-
-
